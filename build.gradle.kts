@@ -48,6 +48,7 @@ tasks.test {
 
 }
 
+
 testlogger {
 	setTheme("standard")
 	showExceptions = true
