@@ -7,11 +7,13 @@ plugins {
 	id("org.springframework.boot") version "2.6.8"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("org.unbroken-dome.test-sets") version "4.0.0"
-
+	id("com.bmuschko.docker-spring-boot-application") version "7.4.0"
+	id("com.adarshr.test-logger") version "3.2.0"
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	application
 }
+
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
@@ -43,9 +45,36 @@ tasks.test {
 		showExceptions = true
 		showStackTraces = true
 	}
+
 }
 
-
+testlogger {
+	setTheme("standard")
+	showExceptions = true
+	showStackTraces =  true
+	showFullStackTraces = false
+	showCauses=  true
+	slowThreshold = 2000
+	showSummary = true
+	showSimpleNames = false
+	showPassed = true
+	showSkipped = true
+	showFailed = true
+	showOnlySlow =  false
+	showStandardStreams = false
+	showPassedStandardStreams = true
+	showSkippedStandardStreams = true
+	showFailedStandardStreams = true
+	logLevel = LogLevel.LIFECYCLE
+}
+docker {
+	springBootApplication {
+		baseImage.set("--platform=linux/amd64 openjdk:17-alpine3.14")
+		ports.set(listOf(8080))
+		images.set(setOf("kt-fizzbuzz:1.115", "kt-fizzbuzz:latest"))
+		jvmArgs.set(listOf("-Dspring.profiles.active=production", "-Xmx2048m"))
+	}
+}
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")

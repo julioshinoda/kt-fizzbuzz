@@ -43,6 +43,7 @@ class FizzBuzzApplicationTests {
 		val expected = listOf(
 			Fizzbuzz(input = "${entry}", output = Messages.BUZZ)
 		)
+
 		assertEquals(expected, result)
 	}
 
@@ -76,6 +77,22 @@ class FizzBuzzApplicationTests {
 
 		//then
 		val expected = service.defaultResponse()
+		assertEquals(expected, result)
+	}
+
+
+	@Test
+	fun whenReceiveNonMul_thenReturnEntry() {
+		//given
+		val entry = 4
+
+		//when
+		val result = service.calculate("${entry}")
+
+		//then
+		val expected = listOf(
+			Fizzbuzz(input = "${entry}", output = "${entry}")
+		)
 		assertEquals(expected, result)
 	}
 }
